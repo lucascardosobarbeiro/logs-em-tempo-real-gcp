@@ -3,15 +3,15 @@ provider "google" {
   region  = var.region
 }
 # comentando para nao criar novamente
-# resource "google_pubsub_topic" "logs_topic" {
-#   name = "logs-topic"
-# }
+resource "google_pubsub_topic" "logs_topic" {
+  name = "logs-topic"
+}
 # comentando para nao criar novamente
-# resource "google_storage_bucket" "function_bucket" {
-#   name          = "${var.project_id}-function-code"
-#   location      = var.region
-#   force_destroy = true
-# }
+resource "google_storage_bucket" "function_bucket" {
+  name          = "${var.project_id}-function-code"
+  location      = var.region
+  force_destroy = true
+}
 
 resource "google_cloudfunctions_function" "receive_logs" {
   name        = "receive-logs"
