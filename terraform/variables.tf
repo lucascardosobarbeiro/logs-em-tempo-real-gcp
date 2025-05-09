@@ -10,6 +10,7 @@ variable "region" {
 
 variable "sendgrid_api_key" {
   type = string
+  default = "NWGZvAXmTeGF6rUyyNbjqA"
 }
 
 variable "dest_email" {
