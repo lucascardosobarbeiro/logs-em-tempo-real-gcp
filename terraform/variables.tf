@@ -15,3 +15,8 @@ variable "sendgrid_api_key" {
 variable "dest_email" {
   type = string
 }
+
+variable "dest_email" {
+  type    = string
+  default = "lcb.barbeiro@gmail.com"
+}
