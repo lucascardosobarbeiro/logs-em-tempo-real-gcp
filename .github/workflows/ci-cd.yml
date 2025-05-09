@@ -1,0 +1,51 @@
+name: CI/CD for Log Monitor
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  deploy:
+    name: Deploy Infra and Functions
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.7
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+      - name: Set up gcloud CLI
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Terraform Init
+        working-directory: terraform
+        run: terraform init
+
+      - name: Terraform Apply
+        working-directory: terraform
+        run: terraform apply -auto-approve
+
+      - name: Deploy Cloud Functions
+        run: |
+          gcloud functions deploy receive-logs \
+            --entry-point receive_logs \
+            --runtime python310 \
+            --trigger-http \
+            --allow-unauthenticated \
+            --source ./functions/receive_logs \
+            --set-env-vars LOG_TOPIC=logs-topic
+
+          gcloud functions deploy process-logs \
+            --entry-point process_logs \
+            --runtime python310 \
+            --trigger-topic logs-topic \
+            --source ./functions/process_logs

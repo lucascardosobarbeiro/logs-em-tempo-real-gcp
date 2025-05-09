@@ -1,0 +1,65 @@
+# Python cache e virtualenv
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# Configurações do sistema/IDE
+*.swp
+.DS_Store
+.idea/
+.vscode/
+
+# Arquivos sensíveis e de configuração
+.env
+.env.*
+*.key
+*.pem
+*.crt
+credentials.json
+token.json
+secret.json
+
+# Google Cloud artifacts
+*.log
+.gcloudignore
+.gcloud/
+*.gcloud*
+*.yaml
+
+# Terraform
+.terraform/
+terraform.tfstate
+terraform.tfstate.*
+.crash/
+*.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# GitHub Actions cache
+.github/workflows/.terraform.lock.hcl
+*.bak
+
+# Arquivos grandes ou desnecessários
+*.zip
+*.rar
+*.tar.gz
+*.tar
+*.gz
+*.7z
+*.bak
+*.tmp
+*.log
+
+# Node.js (caso use front-end futuramente)
+node_modules/
+dist/
+build/
+
+# Mac/Linux system files
+Thumbs.db
+ehthumbs.db
