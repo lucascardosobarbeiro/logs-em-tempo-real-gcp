@@ -7,11 +7,11 @@ resource "google_pubsub_topic" "logs_topic" {
   name = "logs-topic"
 }
 
-# resource "google_storage_bucket" "function_bucket" {
-#   name          = "${var.project_id}-function-code"
-#   location      = var.region
-#   force_destroy = true
-# }
+resource "google_storage_bucket" "function_bucket" {
+  name          = "${var.project_id}-function-code"
+  location      = var.region
+  force_destroy = true
+}
 
 resource "google_cloudfunctions_function" "receive_logs" {
   name        = "receive-logs"
@@ -46,3 +46,20 @@ resource "google_cloudfunctions_function" "process_logs" {
     ALERT_EMAIL_TO   = "lcb.barbeiro@gmail.com"
   }
 }
+resource "google_storage_bucket_object" "function_code" {
+  name   = "receive_logs.zip"
+  bucket = google_storage_bucket.function_bucket.name
+  source = "path/to/your/receive_logs.zip"
+}
+resource "google_storage_bucket_object" "function_code_process" {
+  name   = "process_logs.zip"
+  bucket = google_storage_bucket.function_bucket.name
+  source = "path/to/your/process_logs.zip"
+}
+resource "google_pubsub_subscription" "logs_subscription" {
+  name  = "logs-subscription"
+  topic = google_pubsub_topic.logs_topic.id
+
+  ack_deadline_seconds = 10
+}
+
